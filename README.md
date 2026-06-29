@@ -266,5 +266,4 @@ Add your PPT link here
 - LLM-powered Maintenance Report Generation
 - Predictive Spare Parts Inventory
 
----
 
