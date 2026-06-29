@@ -268,14 +268,3 @@ Add your PPT link here
 
 ---
 
-# License
-
-This project is licensed under the MIT License.
-
----
-
-# Developed For
-
-Industrial Intelligence / Enterprise Knowledge Engineering / Asset Operations
-
-Built using Java, Spring Boot, React, PostgreSQL, Neo4j, Redis, Spring AI, Three.js, and modern enterprise software engineering practices.
