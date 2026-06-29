@@ -1,0 +1,65 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.autoconfigure.vectorstore.pgvector.PgVectorStoreAutoConfiguration
+  application:
+    name: tacitiq-backend
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000 # 10 minutes default TTL
+      cache-null-values: false
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus, metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+tacitiq:
+  jwt:
+    secret: 9a4f2c8d3b7a1e5f8g0h2i4j6k8l0m2n4o6p8q0r2s4t6u8v0w2x4y6z8a0b2c4d
+    accessTokenExpirationMs: 900000 # 15 minutes
+    refreshTokenExpirationMs: 604800000 # 7 days
+  security:
+    cors:
+      allowed-origins: "http://localhost:3000,http://localhost:5173"
+  ai:
+    model: gemini-1.5-pro
+    prompt-version: v1
+    upload-dir: ${user.home}/.tacitiq/uploads
+    mock-fallback: true # Uses deterministic offline rule logic and templates if GEMINI_API_KEY is not defined
