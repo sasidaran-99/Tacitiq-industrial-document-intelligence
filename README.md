@@ -231,7 +231,8 @@ If no Gemini API key is supplied, TacitIQ automatically falls back to **Offline 
 |---------|------------|
 | Login | `docs/images/login.png` |
 | Asset Dashboard | `docs/images/dashboard.png` |
-| Operations Assistant | `docs/images/chat.png` |
+| Operations Assistant (Chat 1) | `docs/images/chat1.png` |
+| Operations Assistant (Chat 2) | `docs/images/chat2.png` |
 | Digital Twin | `docs/images/digital-twin.png` |
 | Knowledge Graph | `docs/images/graph.png` |
 | Document Intelligence | `docs/images/document-intelligence.png` |
