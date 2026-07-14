@@ -239,19 +239,12 @@ If no Gemini API key is supplied, TacitIQ automatically falls back to **Offline 
 
 ---
 
-# 🎥 Demo
+# 📄 Project Report
 
-Demo Video:
+Access the complete project documentation below:
 
-```
-Add your YouTube or Google Drive demo link here
-```
-
-Presentation:
-
-```
-Add your PPT link here
-```
+📘 **Project Report (PDF):**  
+[TacitIQ Project Report](docs/TacitIQ_Project_Report.pdf)
 
 ---
 
