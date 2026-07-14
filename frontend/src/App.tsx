@@ -81,7 +81,11 @@ export default function App() {
         body: JSON.stringify({ email: emailInput, password: passwordInput })
       });
       if (!res.ok) {
-        throw new Error("Invalid username or password.");
+        if (res.status === 401 || res.status === 403) {
+          throw new Error("Invalid username or password.");
+        } else {
+          throw new Error(`Server error (${res.status}): Failed to connect to authentication service.`);
+        }
       }
       const data = await res.json();
       if (data && data.accessToken) {

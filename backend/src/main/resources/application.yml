@@ -57,7 +57,7 @@ tacitiq:
     refreshTokenExpirationMs: 604800000 # 7 days
   security:
     cors:
-      allowed-origins: "http://localhost:3000,http://localhost:5173"
+      allowed-origins: "http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:5173"
   ai:
     model: gemini-1.5-pro
     prompt-version: v1

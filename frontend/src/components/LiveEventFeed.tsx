@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Play, Pause, Trash2, HeartPulse, Terminal } from 'lucide-react';
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+import { Client } from '@stomp/stompjs';
 
 interface LogEvent {
   id: string;
@@ -19,40 +18,41 @@ export default function LiveEventFeed() {
     consoleEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [events]);
 
-  // Connect to Spring Boot WebSocket STOMP topic
+  // Connect to Spring Boot WebSocket STOMP topic using native WebSockets
   useEffect(() => {
-    let socket: any = null;
-    let stompClient: any = null;
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const brokerURL = `${protocol}//${window.location.host}/ws/websocket`;
 
-    try {
-      socket = new SockJS('/ws');
-      stompClient = Stomp.over(socket);
-      stompClient.debug = () => {}; // disable debug logs in browser console
-      stompClient.connect({}, () => {
-        stompClient.subscribe('/topic/events', (msg: any) => {
-          if (!isPaused) {
-            const body = JSON.parse(msg.body);
-            setEvents(prev => [...prev, {
-              id: Math.random().toString(),
-              eventType: body.eventType,
-              payload: body.payload,
-              timestamp: new Date().toLocaleTimeString()
-            }]);
-          }
-        });
+    const stompClient = new Client({
+      brokerURL,
+      debug: () => {}, // Disable debug logs in browser console
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+    });
+
+    stompClient.onConnect = () => {
+      stompClient.subscribe('/topic/events', (msg) => {
+        if (!isPaused) {
+          const body = JSON.parse(msg.body);
+          setEvents(prev => [...prev, {
+            id: Math.random().toString(),
+            eventType: body.eventType,
+            payload: body.payload,
+            timestamp: new Date().toLocaleTimeString()
+          }]);
+        }
       });
-    } catch (e) {
-      console.warn("WebSocket connection failed. Falling back to simulated intervals.", e);
-    }
+    };
+
+    stompClient.onWebSocketError = (error) => {
+      console.warn("WebSocket connection failed. Falling back to simulated intervals.", error);
+    };
+
+    stompClient.activate();
 
     return () => {
-      if (stompClient) {
-        try {
-          stompClient.disconnect();
-        } catch (err) {
-          // ignore disconnect errors
-        }
-      }
+      stompClient.deactivate();
     };
   }, [isPaused]);
 
