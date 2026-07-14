@@ -225,7 +225,6 @@ If no Gemini API key is supplied, TacitIQ automatically falls back to **Offline 
 
 # 📸 Screenshots
 
-> Add screenshots after uploading them to the repository.
 
 | Module | Screenshot |
 |---------|------------|
