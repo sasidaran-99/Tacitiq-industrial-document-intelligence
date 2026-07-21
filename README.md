@@ -8,7 +8,7 @@ The platform combines Artificial Intelligence, Knowledge Graphs, Industrial Docu
 
 # ✨ Features
 
-- 🔐 JWT Authentication & Role-Based Access Control
+- 🔐 JWT Authentication, Google OAuth, & Role-Based Access Control
 - 🤖 AI-powered Operations Assistant with Retrieval-Augmented Generation (RAG)
 - 📄 Industrial Document Intelligence with OCR & Metadata Extraction
 - 🕸 Neo4j Knowledge Graph Visualization
@@ -31,7 +31,7 @@ The platform combines Artificial Intelligence, Knowledge Graphs, Industrial Docu
 - Document Intelligence
 - Workforce Planning
 - Live Event Console
-- Authentication & Security
+- Authentication & Security (Local JWT + Google OAuth Identity Provider)
 - Predictive Maintenance Engine
 
 ---
@@ -48,6 +48,7 @@ The platform combines Artificial Intelligence, Knowledge Graphs, Industrial Docu
   - Spring Data Neo4j
   - Spring WebSocket
   - Spring Cache
+- **Token Verification:** Nimbus JOSE JWT Library (JWKS Verification)
 - **AI Engine:** Spring AI with Vertex AI Gemini
 - **Database Migrations:** Flyway
 - **Build Tool:** Maven
@@ -55,6 +56,7 @@ The platform combines Artificial Intelligence, Knowledge Graphs, Industrial Docu
 ## Frontend Stack
 
 - **Runtime:** React 18 + Vite + TypeScript
+- **OAuth Library:** `@react-oauth/google` SDK
 - **Styling:** TailwindCSS
 - **3D Viewer:** Three.js
 - **Knowledge Graph:** SVG Interactive Node-Link Graph
@@ -183,12 +185,17 @@ http://localhost:3000
 
 # 🔑 Environment Variables
 
-Backend supports running with or without Gemini.
+Backend supports running with or without Gemini and Google Client configurations.
 
-Create a `.env` file (optional):
+Create a `.env` file:
 
 ```env
+# Gemini API Key (Optional, falls back to Offline Mock Mode)
 GEMINI_API_KEY=your_api_key
+
+# Google OAuth Credentials (Optional, falls back to local Dev Simulator Mode)
+GOOGLE_CLIENT_ID=your_google_client_id_here
+VITE_GOOGLE_CLIENT_ID=your_google_client_id_here
 ```
 
 If no Gemini API key is supplied, TacitIQ automatically falls back to **Offline Mock Mode**, allowing the entire platform to function for demonstrations and testing.
@@ -211,7 +218,8 @@ If no Gemini API key is supplied, TacitIQ automatically falls back to **Offline 
 
 | Method | Endpoint | Description | Auth |
 |---------|----------|-------------|------|
-| POST | `/api/auth/login` | User Authentication | No |
+| POST | `/api/auth/login` | User Password Authentication | No |
+| POST | `/api/auth/google` | User Google OAuth Token Authentication | No |
 | POST | `/api/auth/refresh` | Refresh JWT | No |
 | GET | `/api/assets` | Retrieve Asset Registry | User |
 | GET | `/api/assets/{id}/telemetry` | Live Telemetry | User |

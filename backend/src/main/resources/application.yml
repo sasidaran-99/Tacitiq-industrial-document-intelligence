@@ -63,3 +63,6 @@ tacitiq:
     prompt-version: v1
     upload-dir: ${user.home}/.tacitiq/uploads
     mock-fallback: true # Uses deterministic offline rule logic and templates if GEMINI_API_KEY is not defined
+
+google:
+  client-id: ${GOOGLE_CLIENT_ID:}

@@ -23,7 +23,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password_hash", nullable = false)
+    @Column(name = "password_hash")
     private String passwordHash;
 
     @Column(nullable = false)
@@ -42,6 +42,19 @@ public class User {
 
     @Column(name = "years_experience")
     private Integer yearsExperience;
+
+    @Column(name = "display_name")
+    private String displayName;
+
+    @Column(name = "profile_picture")
+    private String profilePicture;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private String provider = "LOCAL";
+
+    @Column(name = "google_subject_id", unique = true)
+    private String googleSubjectId;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt = OffsetDateTime.now();

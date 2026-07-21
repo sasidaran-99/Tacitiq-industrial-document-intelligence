@@ -20,4 +20,7 @@ public class UserDto {
     private List<String> expertiseAreas;
     private LocalDate retirementDate;
     private Integer yearsExperience;
+    private String displayName;
+    private String profilePicture;
+    private String provider;
 }
