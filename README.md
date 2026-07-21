@@ -8,16 +8,18 @@ The platform combines Artificial Intelligence, Knowledge Graphs, Industrial Docu
 
 # ✨ Features
 
-- 🔐 JWT Authentication, Google OAuth, & Role-Based Access Control
-- 🤖 AI-powered Operations Assistant with Retrieval-Augmented Generation (RAG)
+- 🔐 Enterprise Authentication (JWT + Google OAuth + Role-Based Access Control)
+- 🤖 AI-powered Operations Assistant with Enterprise SaaS Workspace
+- 💬 Smart Query Suggestions & Session History
+- 🚨 Live Operational Context (Alerts, Connected AI Agents & Facility Health)
 - 📄 Industrial Document Intelligence with OCR & Metadata Extraction
-- 🕸 Neo4j Knowledge Graph Visualization
+- 🕸 Interactive Neo4j Knowledge Graph Visualization
 - 📊 Real-time Asset Health & Telemetry Dashboard
 - ⚙️ Interactive 3D Digital Twin
 - 📈 Predictive Maintenance & Failure Analysis
 - 👷 Workforce Planning & Knowledge Loss Risk Assessment
 - 📡 Live Event Streaming using WebSockets
-- 🗄 PostgreSQL + pgvector for structured and vector data
+- 🗄 PostgreSQL + pgvector for Structured & Vector Data
 - 🔍 AI-assisted Asset Search & Root Cause Analysis
 
 ---
@@ -74,40 +76,58 @@ The platform combines Artificial Intelligence, Knowledge Graphs, Industrial Docu
 # System Architecture
 
 ```
-                        React + Vite Frontend
-                                │
-                                ▼
-                      Spring Boot REST APIs
-                                │
-        ┌──────────────┬───────────────┬───────────────┐
-        ▼              ▼               ▼               ▼
- PostgreSQL        Neo4j         Redis Cache      Spring AI
- (pgvector)     Knowledge Graph                   Gemini
+                             React + Vite Frontend
+                                      │
+                                      ▼
+                      Enterprise Authentication Layer
+                     (Google OAuth + JWT + RBAC)
+                                      │
+                                      ▼
+                           Spring Boot REST APIs
+                                      │
+          ┌──────────────┬───────────────┬───────────────┬──────────────┐
+          ▼              ▼               ▼               ▼              ▼
+     PostgreSQL      Neo4j         Redis Cache      Spring AI     WebSockets
+     (pgvector)   Knowledge Graph                   Gemini       Live Events
 ```
-
 ---
 
 # Folder Structure
 
-```
+```text
 tacitiq/
-├── docker-compose.yml
-├── README.md
 ├── backend/
-│   ├── src/main/java/com/tacitiq/
-│   │   ├── core/                  # Security, WebSockets, Event Configurations
-│   │   └── modules/               # Authentication, Assets, AI, Search, Graph...
-│   ├── src/main/resources/
-│   │   ├── db/migration/          # Flyway Migrations
-│   │   └── application.yml
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/tacitiq/
+│   │   │   │       ├── core/                 # Security, Configuration, WebSockets
+│   │   │   │       └── modules/              # Authentication, Assets, AI, Graph, Documents...
+│   │   │   └── resources/
+│   │   │       ├── db/
+│   │   │       │   └── migration/            # Flyway Migrations
+│   │   │       └── application.yml
 │   └── pom.xml
 │
-└── frontend/
-    ├── src/
-    │   ├── App.tsx
-    │   ├── components/
-    │   └── index.css              # Enterprise Industrial UI Styling
-    └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/                       # Reusable UI Components
+│   │   ├── App.tsx
+│   │   ├── main.tsx
+│   │   ├── index.css
+│   │   └── vite-env.d.ts
+│   ├── public/
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   ├── package.json
+│   ├── tailwind.config.js
+│   ├── vite.config.ts
+│   └── .env.example
+│
+├── docs/
+├── docker-compose.yml
+├── LICENSE
+└── README.md
 ```
 
 ---
@@ -185,21 +205,27 @@ http://localhost:3000
 
 # 🔑 Environment Variables
 
-Backend supports running with or without Gemini and Google Client configurations.
-
 Create a `.env` file:
 
 ```env
-# Gemini API Key (Optional, falls back to Offline Mock Mode)
-GEMINI_API_KEY=your_api_key
+# Google OAuth
+GOOGLE_CLIENT_ID=your_google_client_id
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
 
-# Google OAuth Credentials (Optional, falls back to local Dev Simulator Mode)
-GOOGLE_CLIENT_ID=your_google_client_id_here
-VITE_GOOGLE_CLIENT_ID=your_google_client_id_here
+# Vertex AI / Gemini
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
-If no Gemini API key is supplied, TacitIQ automatically falls back to **Offline Mock Mode**, allowing the entire platform to function for demonstrations and testing.
+### Authentication
 
+TacitIQ supports two authentication methods:
+
+- Google OAuth (Recommended)
+- Local JWT Authentication using pre-seeded enterprise accounts
+
+If Google OAuth credentials are not configured, the application automatically falls back to local authentication for development and demonstration purposes.
+
+If no Gemini API key is configured, the AI assistant automatically runs in Offline Mock Mode.
 ---
 
 # Pre-seeded Credentials
@@ -218,17 +244,16 @@ If no Gemini API key is supplied, TacitIQ automatically falls back to **Offline 
 
 | Method | Endpoint | Description | Auth |
 |---------|----------|-------------|------|
-| POST | `/api/auth/login` | User Password Authentication | No |
-| POST | `/api/auth/google` | User Google OAuth Token Authentication | No |
-| POST | `/api/auth/refresh` | Refresh JWT | No |
+| POST | `/api/auth/login` | Local JWT Authentication | No |
+| POST | `/api/auth/google` | Google OAuth Authentication | No |
+| POST | `/api/auth/refresh` | Refresh JWT Token | No |
 | GET | `/api/assets` | Retrieve Asset Registry | User |
 | GET | `/api/assets/{id}/telemetry` | Live Telemetry | User |
 | POST | `/api/documents/upload` | Upload Industrial Documents | Engineer |
-| POST | `/api/agents/chat` | Operations Assistant | User |
+| POST | `/api/agents/chat` | AI Operations Assistant | User |
 | GET | `/api/agents/predict/{assetId}` | Predictive Maintenance | User |
 | GET | `/api/agents/retirement-risk` | Workforce Planning | User |
 | GET | `/api/graph/nodes` | Knowledge Graph | User |
-
 ---
 
 # 📸 Screenshots
@@ -264,6 +289,8 @@ Access the complete project documentation below:
 - Semantic PDF Search
 - Multi-Plant Asset Federation
 - Advanced Failure Mode Detection
+- Streaming AI Responses
+- Voice-enabled Operations Assistant
 - LLM-powered Maintenance Report Generation
 - Predictive Spare Parts Inventory
 
