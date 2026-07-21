@@ -328,144 +328,276 @@ export default function App() {
     const isGoogleConfigured = googleClientId && googleClientId !== "mock_client_id" && googleClientId !== "YOUR_GOOGLE_CLIENT_ID";
 
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50 text-slate-800 overflow-hidden font-sans relative">
-        {/* Glowing visual blobs for SaaS feel */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brandAzure/10 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brandEmerald/5 rounded-full blur-[100px] pointer-events-none" />
-        
-        <div className="w-full max-w-[490px] p-10 bg-white border border-slate-100/80 shadow-premium rounded-3xl relative z-10 transition-all duration-300">
-          <div className="text-center mb-6">
-            <div className="h-12 w-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center mx-auto mb-3 shadow-sm">
+      <div className="min-h-screen flex bg-slate-50 text-slate-800 font-sans relative overflow-hidden">
+        {/* Left Panel: 55% Width (Hidden on Mobile/Tablet below lg) */}
+        <div className="hidden lg:flex lg:w-[55%] bg-slate-950 text-white p-16 flex-col justify-between relative overflow-hidden border-r border-slate-800/60 z-20">
+          {/* Blueprint Engineering Grid Pattern */}
+          <div className="absolute inset-0 opacity-[0.035] bg-[linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none" />
+          
+          {/* Subtle Glowing Mesh Blobs */}
+          <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-brandAzure/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-brandEmerald/5 rounded-full blur-[120px] pointer-events-none" />
+
+          {/* Animated Asset Topology Network (Vector Industrial Illustration) */}
+          <div className="absolute inset-0 opacity-[0.18] pointer-events-none flex items-center justify-center">
+            <svg className="w-full h-full p-8" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="linkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="#0EA5E9" stopOpacity="0.4" />
+                </linearGradient>
+                <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+              <path d="M 150,150 L 300,100 L 450,150 L 600,100 L 700,250 M 300,100 L 350,300 L 450,150 M 150,150 L 250,400 L 500,450 L 700,250 M 350,300 L 500,450 L 550,280 L 600,100" stroke="url(#linkGrad)" strokeWidth="1.5" strokeDasharray="5, 5">
+                <animate attributeName="stroke-dashoffset" values="100;0" dur="20s" repeatCount="indefinite" />
+              </path>
+              
+              <circle r="4" fill="#0EA5E9">
+                <animateMotion dur="7s" repeatCount="indefinite" path="M 150,150 L 300,100 L 450,150 L 600,100 L 700,250" />
+              </circle>
+              <circle r="4" fill="#10B981">
+                <animateMotion dur="9s" repeatCount="indefinite" path="M 150,150 L 250,400 L 500,450 L 700,250" />
+              </circle>
+
+              <g className="animate-pulse">
+                <circle cx="150" cy="150" r="16" fill="url(#nodeGlow)" />
+                <circle cx="150" cy="150" r="6" fill="#10B981" stroke="#fff" strokeWidth="2" />
+                <text x="150" y="130" fill="#64748B" fontSize="10" fontWeight="bold" textAnchor="middle">FEED_PUMP_A</text>
+              </g>
+              <g className="animate-pulse" style={{ animationDelay: '1s' }}>
+                <circle cx="300" cy="100" r="16" fill="url(#nodeGlow)" />
+                <circle cx="300" cy="100" r="6" fill="#10B981" stroke="#fff" strokeWidth="2" />
+                <text x="300" y="80" fill="#64748B" fontSize="10" fontWeight="bold" textAnchor="middle">VALVE_012</text>
+              </g>
+              <g className="animate-pulse" style={{ animationDelay: '0.5s' }}>
+                <circle cx="450" cy="150" r="16" fill="url(#nodeGlow)" />
+                <circle cx="450" cy="150" r="6" fill="#0EA5E9" stroke="#fff" strokeWidth="2" />
+                <text x="450" y="130" fill="#64748B" fontSize="10" fontWeight="bold" textAnchor="middle">COMPRESSOR_B</text>
+              </g>
+              <g className="animate-pulse" style={{ animationDelay: '1.5s' }}>
+                <circle cx="600" cy="100" r="16" fill="url(#nodeGlow)" />
+                <circle cx="600" cy="100" r="6" fill="#10B981" stroke="#fff" strokeWidth="2" />
+                <text x="600" y="80" fill="#64748B" fontSize="10" fontWeight="bold" textAnchor="middle">TEMP_SENS_04</text>
+              </g>
+              <g className="animate-pulse" style={{ animationDelay: '2s' }}>
+                <circle cx="700" cy="250" r="16" fill="url(#nodeGlow)" />
+                <circle cx="700" cy="250" r="6" fill="#0EA5E9" stroke="#fff" strokeWidth="2" />
+                <text x="700" y="230" fill="#64748B" fontSize="10" fontWeight="bold" textAnchor="middle">DIST_UNIT_1</text>
+              </g>
+              <g className="animate-pulse" style={{ animationDelay: '0.7s' }}>
+                <circle cx="350" cy="300" r="16" fill="url(#nodeGlow)" />
+                <circle cx="350" cy="300" r="6" fill="#10B981" stroke="#fff" strokeWidth="2" />
+                <text x="350" y="280" fill="#64748B" fontSize="10" fontWeight="bold" textAnchor="middle">FLOW_SENS_2</text>
+              </g>
+              <g className="animate-pulse" style={{ animationDelay: '1.2s' }}>
+                <circle cx="250" cy="400" r="16" fill="url(#nodeGlow)" />
+                <circle cx="250" cy="400" r="6" fill="#0EA5E9" stroke="#fff" strokeWidth="2" />
+                <text x="250" y="380" fill="#64748B" fontSize="10" fontWeight="bold" textAnchor="middle">HEATER_03</text>
+              </g>
+              <g className="animate-pulse" style={{ animationDelay: '1.8s' }}>
+                <circle cx="500" cy="450" r="16" fill="url(#nodeGlow)" />
+                <circle cx="500" cy="450" r="6" fill="#10B981" stroke="#fff" strokeWidth="2" />
+                <text x="500" y="430" fill="#64748B" fontSize="10" fontWeight="bold" textAnchor="middle">OUTLET_VALVE</text>
+              </g>
+              <g className="animate-pulse" style={{ animationDelay: '2.5s' }}>
+                <circle cx="550" cy="280" r="16" fill="url(#nodeGlow)" />
+                <circle cx="550" cy="280" r="6" fill="#0EA5E9" stroke="#fff" strokeWidth="2" />
+                <text x="550" y="260" fill="#64748B" fontSize="10" fontWeight="bold" textAnchor="middle">PRESS_REG_12</text>
+              </g>
+            </svg>
+          </div>
+
+          {/* Top Content: Branding */}
+          <div className="flex items-center gap-3.5 z-10 animate-in fade-in slide-in-from-top-4 duration-500 ease-out">
+            <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-brandEmerald to-brandAzure flex items-center justify-center shadow-md">
               <LogoIcon />
             </div>
-            <h1 className="text-lg font-black text-slate-900 tracking-tight">
-              TacitIQ Portal
-            </h1>
-            <p className="text-[10px] text-slate-400 mt-0.5 font-bold uppercase tracking-wider">
-              Enterprise Industrial Intelligence Platform
-            </p>
-          </div>
-
-          <div className="mb-5 text-center">
-            <h2 className="text-base font-bold text-slate-800">Welcome Back</h2>
-            <p className="text-xs text-slate-400 mt-0.5 font-medium">Sign in to continue to your dashboard</p>
-          </div>
-
-          {loginError && (
-            <div className="p-3 mb-4 bg-brandRed/10 border border-brandRed/20 rounded-xl text-xs font-bold text-brandRed">
-              {loginError}
+            <div>
+              <span className="font-extrabold text-lg text-white tracking-tight leading-none block">TacitIQ</span>
+              <span className="block text-[10px] text-slate-400 font-semibold tracking-wider mt-1">Enterprise Industrial Intelligence Platform</span>
             </div>
-          )}
+          </div>
 
-          {/* Primary Login: Google OAuth */}
-          <div className="mb-4">
-            <div className="w-full focus-within:ring-2 focus-within:ring-brandAzure focus-within:ring-offset-2 rounded-xl overflow-hidden flex justify-center">
-              {isGoogleConfigured ? (
-                <div className="w-full flex justify-center [&>div]:w-full">
-                  <GoogleLogin
-                    onSuccess={async (credentialResponse) => {
-                      if (credentialResponse.credential) {
-                        await handleGoogleSuccess(credentialResponse.credential);
-                      }
-                    }}
-                    onError={() => {
-                      setLoginError("Google Sign-In failed.");
-                    }}
-                    text="continue_with"
-                    theme="outline"
-                    size="large"
-                    shape="rectangular"
+          {/* Center Content: Headline & Desc */}
+          <div className="my-auto max-w-lg z-10 animate-in fade-in slide-in-from-bottom-6 duration-500 ease-out">
+            <h1 className="text-3xl xl:text-4xl font-extrabold text-white tracking-tight leading-tight mb-4">
+              Transform Enterprise Knowledge into Operational Intelligence
+            </h1>
+            <p className="text-slate-400 text-sm leading-relaxed mb-8 font-medium">
+              TacitIQ unifies operational knowledge, digital twins, AI copilots, and industrial assets into one intelligent platform.
+            </p>
+            
+            {/* Feature List */}
+            <ul className="space-y-4">
+              {[
+                "AI Operations Assistant",
+                "Digital Twin Intelligence",
+                "Enterprise Knowledge Graph",
+                "Predictive Maintenance",
+                "Workforce Knowledge Capture"
+              ].map((feature, idx) => (
+                <li key={idx} className="flex items-center gap-3.5 text-slate-200 text-sm font-semibold">
+                  <div className="h-5 w-5 rounded-full bg-brandEmerald/10 border border-brandEmerald/30 flex items-center justify-center text-brandEmerald">
+                    <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Bottom Content: Footer info */}
+          <div className="flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-800/80 pt-6 z-10">
+            <span className="font-semibold tracking-wider">Version 2.4.0 (Enterprise)</span>
+            <div className="flex items-center gap-4 font-semibold tracking-wider">
+              <a href="#docs" className="hover:text-slate-300 transition-colors" onClick={e => e.preventDefault()}>Documentation</a>
+              <a href="#support" className="hover:text-slate-300 transition-colors" onClick={e => e.preventDefault()}>Support</a>
+              <a href="#privacy" className="hover:text-slate-300 transition-colors" onClick={e => e.preventDefault()}>Privacy</a>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Panel: 45% Width (Vertically Centered Auth Form) */}
+        <div className="w-full lg:w-[45%] flex flex-col justify-center items-center p-8 sm:p-16 bg-white relative z-10">
+          {/* Subtle Blueprint grid overlay for auth side */}
+          <div className="absolute inset-0 opacity-[0.012] bg-[linear-gradient(rgba(15,23,42,1)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,1)_1px,transparent_1px)] bg-[size:30px_30px] pointer-events-none" />
+
+          <div className="max-w-[420px] w-full z-10 animate-in fade-in slide-in-from-bottom-8 duration-600 ease-out">
+            {/* Branding Header visible ONLY on Mobile/Tablet */}
+            <div className="lg:hidden flex items-center gap-3.5 mb-10">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-brandEmerald to-brandAzure flex items-center justify-center shadow-sm">
+                <LogoIcon />
+              </div>
+              <div>
+                <span className="font-extrabold text-base text-slate-900 tracking-tight block">TacitIQ</span>
+                <span className="block text-[9px] text-slate-400 font-bold tracking-wider mt-0.5">Enterprise Industrial Intelligence Platform</span>
+              </div>
+            </div>
+
+            {/* Headline and tagline */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Sign in</h2>
+              <p className="text-xs text-slate-500 mt-1.5 font-semibold">Continue to your enterprise workspace</p>
+            </div>
+
+            {loginError && (
+              <div className="p-3.5 mb-5 bg-brandRed/10 border border-brandRed/20 rounded-xl text-xs font-bold text-brandRed">
+                {loginError}
+              </div>
+            )}
+
+            {/* Primary Login: Google OAuth */}
+            <div className="mb-5">
+              <div className="w-full focus-within:ring-2 focus-within:ring-brandAzure focus-within:ring-offset-2 rounded-xl overflow-hidden flex justify-center">
+                {isGoogleConfigured ? (
+                  <div className="w-full flex justify-center [&>div]:w-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(15,23,42,0.04)] active:scale-[0.99] active:translate-y-0 rounded-xl overflow-hidden border border-slate-200 bg-white">
+                    <GoogleLogin
+                      onSuccess={async (credentialResponse) => {
+                        if (credentialResponse.credential) {
+                          await handleGoogleSuccess(credentialResponse.credential);
+                        }
+                      }}
+                      onError={() => {
+                        setLoginError("Google Sign-In failed.");
+                      }}
+                      text="continue_with"
+                      theme="outline"
+                      size="large"
+                      shape="rectangular"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full p-4 bg-slate-50 border border-slate-200/50 rounded-xl text-center">
+                    <p className="text-xs font-bold text-slate-800">
+                      Enterprise Sign-In Unavailable
+                    </p>
+                    <p className="text-[10px] text-slate-500 mt-1.5 font-semibold leading-relaxed">
+                      Google authentication is currently unavailable.<br />
+                      Please contact your administrator or try again later.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="flex items-center my-6">
+              <div className="flex-grow border-t border-slate-200/50"></div>
+              <span className="px-4 text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em]">or</span>
+              <div className="flex-grow border-t border-slate-200/50"></div>
+            </div>
+
+            {/* Traditional Credentials Form */}
+            <form onSubmit={handleLogin} className="space-y-5">
+              <div>
+                <label className="block text-[10px] uppercase font-bold tracking-[0.15em] text-slate-400 mb-2">
+                  Email Address
+                </label>
+                <div className="relative flex items-center group">
+                  <Mail className="absolute left-4 h-4.5 w-4.5 text-slate-400 group-focus-within:text-brandEmerald transition-colors duration-200" />
+                  <input
+                    type="email"
+                    required
+                    value={emailInput}
+                    onChange={e => setEmailInput(e.target.value)}
+                    placeholder="name@company.com"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-brandEmerald focus:ring-4 focus:ring-brandEmerald/10 focus:bg-white text-xs font-semibold transition-all duration-200"
+                    aria-label="Email Address"
                   />
                 </div>
-              ) : (
-                <div className="w-full p-4 bg-slate-50 border border-slate-200/50 rounded-2xl text-center">
-                  <p className="text-xs font-bold text-slate-800">
-                    Enterprise Sign-In Unavailable
-                  </p>
-                  <p className="text-[10.5px] text-slate-500 mt-1.5 font-semibold leading-relaxed">
-                    Google authentication is currently unavailable.<br />
-                    Please contact your administrator or try again later.
-                  </p>
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase font-bold tracking-[0.15em] text-slate-400 mb-2">
+                  Password
+                </label>
+                <div className="relative flex items-center group">
+                  <Lock className="absolute left-4 h-4.5 w-4.5 text-slate-400 group-focus-within:text-brandEmerald transition-colors duration-200" />
+                  <input
+                    type="password"
+                    required
+                    value={passwordInput}
+                    onChange={e => setPasswordInput(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-brandEmerald focus:ring-4 focus:ring-brandEmerald/10 focus:bg-white text-xs font-semibold transition-all duration-200"
+                    aria-label="Password"
+                  />
                 </div>
-              )}
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="flex items-center my-5">
-            <div className="flex-grow border-t border-slate-100"></div>
-            <span className="px-3 text-[10px] text-slate-400 uppercase font-bold tracking-widest">OR</span>
-            <div className="flex-grow border-t border-slate-100"></div>
-          </div>
-
-          {/* Traditional Password Form */}
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1.5">
-                Email Address
-              </label>
-              <div className="relative flex items-center">
-                <Mail className="absolute left-4 h-4 w-4 text-slate-400" />
-                <input
-                  type="email"
-                  required
-                  value={emailInput}
-                  onChange={e => setEmailInput(e.target.value)}
-                  placeholder="name@company.com"
-                  className="w-full bg-slate-50 border border-slate-200/60 rounded-xl py-2 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-brandAzure focus:bg-white text-xs font-semibold transition-all duration-200"
-                  aria-label="Email Address"
-                />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1.5">
-                Password
-              </label>
-              <div className="relative flex items-center">
-                <Lock className="absolute left-4 h-4 w-4 text-slate-400" />
-                <input
-                  type="password"
-                  required
-                  value={passwordInput}
-                  onChange={e => setPasswordInput(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full bg-slate-50 border border-slate-200/60 rounded-xl py-2 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-brandAzure focus:bg-white text-xs font-semibold transition-all duration-200"
-                  aria-label="Password"
-                />
+              <div className="flex items-center justify-between text-xs pt-1">
+                <label className="flex items-center gap-2 text-slate-500 font-semibold cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={e => setRememberMe(e.target.checked)}
+                    className="rounded border-slate-200 text-brandEmerald focus:ring-brandEmerald accent-brandEmerald w-4 h-4 cursor-pointer transition-colors duration-150"
+                  />
+                  <span>Remember Me</span>
+                </label>
+                <a 
+                  href="#forgot" 
+                  className="text-brandEmerald hover:text-brandEmerald/80 font-bold transition-colors duration-150 relative py-0.5 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-brandEmerald/60 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-250 after:origin-left" 
+                  onClick={e => { e.preventDefault(); alert("Please contact your system administrator to manage email password keys."); }}
+                >
+                  Forgot Password?
+                </a>
               </div>
-            </div>
 
-            <div className="flex items-center justify-between text-xs pt-1">
-              <label className="flex items-center gap-2 text-slate-500 font-semibold cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={e => setRememberMe(e.target.checked)}
-                  className="rounded border-slate-200 text-brandAzure focus:ring-brandAzure w-4 h-4 cursor-pointer"
-                />
-                <span>Remember Me</span>
-              </label>
-              <a href="#forgot" className="text-brandAzure hover:text-brandAzure/80 font-bold hover:underline" onClick={e => { e.preventDefault(); alert("Please contact your system administrator to manage email password keys."); }}>
-                Forgot Password?
-              </a>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full py-3.5 bg-gradient-to-r from-brandEmerald to-brandAzure text-white font-bold rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 hover:shadow-lg hover:shadow-brandEmerald/25 flex items-center justify-center gap-2 text-sm mt-4 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brandAzure focus:ring-offset-2 disabled:opacity-50"
-              aria-label="Sign In with email and password"
-            >
-              {isSubmitting ? "Connecting..." : "Sign In"}
-            </button>
-          </form>
-
-          {/* Secure Footer */}
-          <div className="mt-6 text-center border-t border-slate-100/80 pt-5">
-            <p className="text-[10px] text-slate-400/50 font-bold tracking-wider uppercase">
-              © 2026 TacitIQ • Secure Enterprise Platform
-            </p>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-3.5 bg-gradient-to-r from-brandEmerald to-brandAzure text-white font-bold rounded-xl hover:shadow-[0_4px_12px_rgba(16,185,129,0.12)] transition-all duration-200 flex items-center justify-center gap-2 text-sm mt-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brandAzure focus:ring-offset-2 disabled:opacity-50"
+                aria-label="Sign In with email and password"
+              >
+                {isSubmitting ? "Connecting..." : "Sign In"}
+              </button>
+            </form>
           </div>
         </div>
       </div>

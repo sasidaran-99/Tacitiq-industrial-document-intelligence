@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Mic, MicOff, Library, ShieldCheck } from 'lucide-react';
+import { Send, Mic, MicOff, Library, ShieldCheck, Activity, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -38,11 +38,56 @@ export default function ChatInterface({ setActiveTab }: ChatInterfaceProps) {
   const [input, setInput] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [hoveredCitation, setHoveredCitation] = useState<string | null>(null);
+  const [tickerIndex, setTickerIndex] = useState(0);
+  const [stats, setStats] = useState({
+    averageHealthScore: "94.2%",
+    totalAssets: 284,
+    openAlertsCount: 12,
+    criticalAlertsCount: 2,
+    knowledgeGraphSize: "48K"
+  });
+
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTickerIndex(prev => (prev + 1) % 5);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('tacitiq_token');
+    if (!token) return;
+    fetch('/api/dashboard/summary', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data && !data.error) {
+          setStats({
+            averageHealthScore: data.averageHealthScore ? `${data.averageHealthScore}%` : "94.2%",
+            totalAssets: data.totalAssets || 284,
+            openAlertsCount: data.openAlertsCount || 12,
+            criticalAlertsCount: data.criticalAlertsCount || 2,
+            knowledgeGraphSize: data.knowledgeGraphSize || "48K"
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const systemEvents = [
+    "Sensor synchronization complete • 2s ago",
+    "Knowledge graph indexed • 12s ago",
+    "Maintenance schedule refreshed • 36s ago",
+    "Safety rules synchronized • 1m ago",
+    "Predictive anomaly analysis active • 45s ago"
+  ];
 
   const handleSend = async (textToSend: string) => {
     if (!textToSend.trim()) return;
@@ -91,10 +136,11 @@ export default function ChatInterface({ setActiveTab }: ChatInterfaceProps) {
   };
 
   return (
-    <div className="h-full w-full p-6 chat-workspace-bg flex flex-col justify-center items-center">
-      <div className="w-full max-w-4xl h-full flex flex-col bg-white rounded-[12px] border border-[#E2E8F0] shadow-[0_8px_30px_rgba(15,23,42,0.08)] overflow-hidden z-10">
+    <div className="h-full w-full p-4 md:p-6 chat-workspace-bg flex flex-col lg:flex-row gap-6 overflow-y-auto lg:overflow-hidden">
+      {/* Left Area: Main Chat Workspace */}
+      <div className="flex-1 min-w-0 flex flex-col bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/80 shadow-[0_8px_30px_rgba(15,23,42,0.03)] overflow-hidden z-10 relative">
         {/* Messages Scroll Area */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
           {messages.map((msg, index) => (
             <div
               key={index}
@@ -283,6 +329,27 @@ export default function ChatInterface({ setActiveTab }: ChatInterfaceProps) {
                   </ReactMarkdown>
                 </div>
 
+                {/* Suggested Query Chips inside the welcome message container */}
+                {index === 0 && messages.length === 1 && (
+                  <div className="mt-5 flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                    {[
+                      "Why did Pump P-101 fail?",
+                      "Audit safety protocols",
+                      "Show today's anomalies",
+                      "Predict next maintenance window",
+                      "Summarize active incidents"
+                    ].map((query, qIdx) => (
+                      <button
+                        key={qIdx}
+                        onClick={() => handleSend(query)}
+                        className="text-[10px] font-bold text-slate-500 bg-white hover:bg-emerald-50/20 border border-slate-200 hover:border-brandEmerald/50 hover:text-brandEmerald py-2 px-3 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all duration-150 cursor-pointer active:scale-95"
+                      >
+                        {query}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
                 {/* Citation Badges */}
                 {msg.citations && msg.citations.length > 0 && (
                   <div className="mt-4 pt-3 border-t border-slate-200/50 flex flex-wrap gap-2">
@@ -320,8 +387,19 @@ export default function ChatInterface({ setActiveTab }: ChatInterfaceProps) {
           <div ref={chatEndRef} />
         </div>
 
+        {/* Live Activity Ticker above input */}
+        <div className="px-6 py-2.5 border-t border-slate-100 bg-slate-50/30 flex items-center justify-between text-[10px] text-slate-400 font-bold tracking-wider select-none">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-brandEmerald animate-pulse"></span>
+            <span className="transition-all duration-300">
+              {systemEvents[tickerIndex]}
+            </span>
+          </div>
+          <span className="text-[9px] text-slate-400/40 uppercase tracking-widest hidden sm:inline">Telemetry Sync Active</span>
+        </div>
+
         {/* Input Frame Panel */}
-        <div className="p-4 border-t border-slate-200/50 bg-slate-50/50">
+        <div className="p-4 border-t border-slate-200/40 bg-slate-50/30">
           <div className="max-w-4xl mx-auto flex items-center gap-4">
             <div className="flex-1 relative flex items-center">
               <input
@@ -353,6 +431,121 @@ export default function ChatInterface({ setActiveTab }: ChatInterfaceProps) {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Right Sidebar: Live Context Panel (Collapsible/Responsive grid below lg) */}
+      <div className="w-full lg:w-80 shrink-0 bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl p-5 shadow-[0_8px_30px_rgba(15,23,42,0.03)] z-10 hidden md:grid md:grid-cols-2 lg:flex lg:flex-col gap-6 overflow-y-auto max-h-[350px] lg:max-h-none">
+        
+        {/* Section 1: Facility Health Index */}
+        <div className="border-b border-slate-100 pb-5">
+          <div className="flex items-center gap-1.5 text-[9px] font-extrabold uppercase tracking-widest text-slate-400 mb-3">
+            <Activity className="h-3.5 w-3.5 text-slate-400" />
+            <span>Facility Health Index</span>
+          </div>
+          <div className="flex items-baseline justify-between mb-2">
+            <span className="text-2xl font-black text-slate-900 tracking-tight">{stats.averageHealthScore}</span>
+            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100/50">Optimal</span>
+          </div>
+          {/* Sparkline trend graph */}
+          <div className="h-10 w-full bg-slate-50/50 border border-slate-100 rounded-xl flex items-center justify-center p-2 overflow-hidden">
+            <svg className="w-full h-full stroke-emerald-500 fill-emerald-50/10" viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path d="M 0,25 Q 15,10 30,22 T 60,8 T 90,18 L 100,5 L 100,30 L 0,30 Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Section 2: Active Alerts */}
+        <div className="border-b border-slate-100 pb-5">
+          <div className="flex items-center gap-1.5 text-[9px] font-extrabold uppercase tracking-widest text-slate-400 mb-3">
+            <AlertTriangle className="h-3.5 w-3.5 text-slate-400" />
+            <span>Active Alerts</span>
+          </div>
+          <div className="space-y-2.5">
+            {[
+              { asset: "Pump P-101", desc: "High vibration anomaly detected", sev: "🔴" },
+              { asset: "Compressor C-07", desc: "Maintenance overdue by 4 days", sev: "🟠" },
+              { asset: "Sector 4 Intake", desc: "Pressure drift trend detected", sev: "🟡" }
+            ].map((alert, idx) => (
+              <div key={idx} className="flex gap-2.5 p-2 bg-slate-50/50 border border-slate-100/80 rounded-xl text-[10px] leading-relaxed">
+                <span className="text-xs">{alert.sev}</span>
+                <div>
+                  <h4 className="font-extrabold text-slate-800">{alert.asset}</h4>
+                  <p className="text-slate-500 font-semibold mt-0.5">{alert.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Section 3: Connected AI Agents */}
+        <div className="border-b border-slate-100 pb-5">
+          <div className="flex items-center gap-1.5 text-[9px] font-extrabold uppercase tracking-widest text-slate-400 mb-3">
+            <CheckCircle className="h-3.5 w-3.5 text-slate-400" />
+            <span>Connected AI Agents</span>
+          </div>
+          <div className="space-y-2">
+            {[
+              { name: "Diagnostic Agent", state: "Active", active: true },
+              { name: "Predictive Maintenance Agent", state: "Active", active: true },
+              { name: "Safety Compliance Agent", state: "Active", active: true },
+              { name: "Knowledge Agent", state: "Idle", active: false }
+            ].map((agent, idx) => (
+              <div key={idx} className="flex items-center justify-between text-[10px] font-semibold text-slate-700">
+                <span className="font-bold">{agent.name}</span>
+                <div className="flex items-center gap-1.5">
+                  <span className={`h-1.5 w-1.5 rounded-full ${agent.active ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`}></span>
+                  <span className={agent.active ? 'text-emerald-600 font-bold' : 'text-slate-400'}>{agent.state}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Section 4: System Summary KPI cards */}
+        <div className="border-b border-slate-100 pb-5">
+          <div className="flex items-center gap-1.5 text-[9px] font-extrabold uppercase tracking-widest text-slate-400 mb-3">
+            <Library className="h-3.5 w-3.5 text-slate-400" />
+            <span>System Summary</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2.5">
+            {[
+              { val: stats.totalAssets, label: "Assets Online" },
+              { val: stats.openAlertsCount, label: "Open Alerts" },
+              { val: stats.criticalAlertsCount, label: "Critical" },
+              { val: stats.knowledgeGraphSize, label: "Graph Nodes" }
+            ].map((kpi, idx) => (
+              <div key={idx} className="bg-slate-50/50 border border-slate-100/80 p-2.5 rounded-xl text-center shadow-sm">
+                <span className="block text-sm font-black text-slate-800 tracking-tight">{kpi.val}</span>
+                <span className="block text-[8px] uppercase tracking-wider text-slate-400 mt-0.5 font-extrabold">{kpi.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Section 5: Session History */}
+        <div>
+          <div className="flex items-center gap-1.5 text-[9px] font-extrabold uppercase tracking-widest text-slate-400 mb-3">
+            <Clock className="h-3.5 w-3.5 text-slate-400" />
+            <span>Recent Queries</span>
+          </div>
+          <div className="space-y-1.5">
+            {[
+              { time: "10:18", query: "Why did Pump P-101 fail?" },
+              { time: "09:42", query: "Summarize active incidents" },
+              { time: "Yesterday", query: "Generate maintenance report" }
+            ].map((item, idx) => (
+              <button 
+                key={idx}
+                onClick={() => handleSend(item.query)}
+                className="w-full text-left flex items-start gap-2 p-1.5 rounded-lg hover:bg-slate-50 transition-colors duration-150 cursor-pointer group text-[10px] focus:outline-none focus:ring-1 focus:ring-brandEmerald"
+              >
+                <span className="text-[9px] text-slate-400 font-mono self-center shrink-0">{item.time}</span>
+                <span className="text-slate-600 font-semibold truncate group-hover:text-brandEmerald transition-colors">{item.query}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
       </div>
     </div>
   );
