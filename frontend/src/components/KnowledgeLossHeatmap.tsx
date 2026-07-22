@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { User, Sparkles, UserMinus, Calendar, Clock, X, CheckCircle } from 'lucide-react';
+import { getApiUrl } from '../api/config';
 
 interface RetirementRisk {
   engineerId: string;
@@ -35,7 +36,7 @@ export default function KnowledgeLossHeatmap() {
 
   useEffect(() => {
     const token = localStorage.getItem('tacitiq_token');
-    fetch('/api/agents/retirement-risk', {
+    fetch(getApiUrl('/api/agents/retirement-risk'), {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => {

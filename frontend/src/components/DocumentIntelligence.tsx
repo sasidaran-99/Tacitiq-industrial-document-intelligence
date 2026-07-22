@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Upload, FileText, Search, Plus, Cpu, ShieldCheck, Layers, ArrowRight } from 'lucide-react';
+import { getApiUrl } from '../api/config';
 
 interface DocumentInfo {
   id: string;
@@ -36,7 +37,7 @@ export default function DocumentIntelligence({ setActiveTab }: Props) {
   // Fetch documents from PostgreSQL
   const fetchDocs = () => {
     const token = localStorage.getItem('tacitiq_token');
-    fetch('/api/documents', {
+    fetch(getApiUrl('/api/documents'), {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -71,7 +72,7 @@ export default function DocumentIntelligence({ setActiveTab }: Props) {
     formData.append('docType', docType);
 
     try {
-      const res = await fetch('/api/documents/upload', {
+      const res = await fetch(getApiUrl('/api/documents/upload'), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

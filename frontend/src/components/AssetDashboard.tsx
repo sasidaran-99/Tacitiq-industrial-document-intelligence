@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { ShieldCheck, AlertOctagon, HelpCircle } from 'lucide-react';
+import { getApiUrl } from '../api/config';
 
 interface TelemetryPoint {
   timestamp: string;
@@ -65,7 +66,7 @@ export default function AssetDashboard() {
 
     const token = localStorage.getItem('tacitiq_token');
 
-    fetch(`/api/assets/${currentAssetId}/telemetry?points=12`, {
+    fetch(getApiUrl(`/api/assets/${currentAssetId}/telemetry?points=12`), {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => {
@@ -86,7 +87,7 @@ export default function AssetDashboard() {
       })
       .catch(() => loadMockTelemetry());
 
-    fetch(`/api/agents/predict/${currentAssetId}`, {
+    fetch(getApiUrl(`/api/agents/predict/${currentAssetId}`), {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => {
@@ -105,7 +106,7 @@ export default function AssetDashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem('tacitiq_token');
-    fetch('/api/dashboard/summary', {
+    fetch(getApiUrl('/api/dashboard/summary'), {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())

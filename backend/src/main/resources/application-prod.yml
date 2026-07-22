@@ -1,25 +1,25 @@
 spring:
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL:${DATABASE_URL:jdbc:postgresql://localhost:5432/tacitiq}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DATABASE_USERNAME:postgres}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DATABASE_PASSWORD:admin123}}
   neo4j:
-    uri: ${NEO4J_URI}
+    uri: ${NEO4J_URI:bolt://localhost:7687}
     authentication:
-      username: ${NEO4J_USERNAME}
-      password: ${NEO4J_PASSWORD}
+      username: ${NEO4J_USERNAME:neo4j}
+      password: ${NEO4J_PASSWORD:secretgraphpassword}
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-      password: ${REDIS_PASSWORD}
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
   ai:
     vertex:
       ai:
         gemini:
-          project-id: ${GCP_PROJECT_ID}
-          location: ${GCP_LOCATION}
-          api-key: ${GEMINI_API_KEY}
+          project-id: ${GCP_PROJECT_ID:dummy-project}
+          location: ${GCP_LOCATION:us-central1}
+          api-key: ${GEMINI_API_KEY:}
 
 logging:
   level:

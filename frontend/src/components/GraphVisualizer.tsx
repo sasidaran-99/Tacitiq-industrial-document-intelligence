@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Database, Play, AlertTriangle, FileText, Settings, ShieldCheck, FileSpreadsheet } from 'lucide-react';
+import { getApiUrl } from '../api/config';
 
 interface Node {
   id: string;
@@ -24,7 +25,7 @@ export default function GraphVisualizer() {
   // Fetch full schema or load mock
   useEffect(() => {
     const token = localStorage.getItem('tacitiq_token');
-    fetch('/api/graph/nodes', {
+    fetch(getApiUrl('/api/graph/nodes'), {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => {

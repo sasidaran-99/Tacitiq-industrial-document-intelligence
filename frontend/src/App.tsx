@@ -8,6 +8,7 @@ import GraphVisualizer from './components/GraphVisualizer';
 import KnowledgeLossHeatmap from './components/KnowledgeLossHeatmap';
 import LiveEventFeed from './components/LiveEventFeed';
 import DocumentIntelligence from './components/DocumentIntelligence';
+import { getApiUrl } from './api/config';
 
 // Custom SVG Logo representing gear + AI networks inside a hexagon
 const LogoIcon = () => (
@@ -99,7 +100,7 @@ export default function App() {
   // Hoisted logout function to clean up credentials across state, cookies, and local storage
   async function handleLogout() {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      await fetch(getApiUrl('/api/auth/logout'), { method: 'POST' });
     } catch (err) {
       // ignore
     }
@@ -118,7 +119,7 @@ export default function App() {
       if (currentToken) {
         if (isTokenExpired(currentToken)) {
           try {
-            const res = await fetch('/api/auth/refresh', { method: 'POST' });
+            const res = await fetch(getApiUrl('/api/auth/refresh'), { method: 'POST' });
             if (res.ok) {
               const data = await res.json();
               if (data && data.accessToken) {
@@ -138,7 +139,7 @@ export default function App() {
         }
       } else {
         try {
-          const res = await fetch('/api/auth/refresh', { method: 'POST' });
+          const res = await fetch(getApiUrl('/api/auth/refresh'), { method: 'POST' });
           if (res.ok) {
             const data = await res.json();
             if (data && data.accessToken) {
@@ -165,7 +166,7 @@ export default function App() {
         const url = typeof input === 'string' ? input : (input instanceof Request ? input.url : input.toString());
         if (!url.includes('/api/auth/refresh') && !url.includes('/api/auth/logout') && !url.includes('/api/auth/login')) {
           try {
-            const refreshRes = await originalFetch('/api/auth/refresh', { method: 'POST' });
+            const refreshRes = await originalFetch(getApiUrl('/api/auth/refresh'), { method: 'POST' });
             if (refreshRes.ok) {
               const data = await refreshRes.json();
               if (data && data.accessToken) {
@@ -215,7 +216,7 @@ export default function App() {
     setLoginError(null);
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(getApiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: emailInput, password: passwordInput })
@@ -247,7 +248,7 @@ export default function App() {
     setLoginError(null);
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/auth/google', {
+      const res = await fetch(getApiUrl('/api/auth/google'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken })
@@ -282,7 +283,7 @@ export default function App() {
   useEffect(() => {
     if (!token) return;
 
-    fetch('/api/dashboard/summary', {
+    fetch(getApiUrl('/api/dashboard/summary'), {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -291,7 +292,7 @@ export default function App() {
         if (res.status === 401 || res.status === 403) {
           // Attempt silent refresh
           try {
-            const refreshRes = await fetch('/api/auth/refresh', { method: 'POST' });
+            const refreshRes = await fetch(getApiUrl('/api/auth/refresh'), { method: 'POST' });
             if (refreshRes.ok) {
               const refreshData = await refreshRes.json();
               if (refreshData && refreshData.accessToken) {

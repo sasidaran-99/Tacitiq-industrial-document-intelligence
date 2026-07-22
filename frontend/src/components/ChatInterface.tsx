@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, Mic, MicOff, Library, ShieldCheck, Activity, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { getApiUrl } from '../api/config';
 
 interface Message {
   sender: 'user' | 'agent';
@@ -63,7 +64,7 @@ export default function ChatInterface({ setActiveTab }: ChatInterfaceProps) {
   useEffect(() => {
     const token = localStorage.getItem('tacitiq_token');
     if (!token) return;
-    fetch('/api/dashboard/summary', {
+    fetch(getApiUrl('/api/dashboard/summary'), {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -97,7 +98,7 @@ export default function ChatInterface({ setActiveTab }: ChatInterfaceProps) {
 
     const token = localStorage.getItem('tacitiq_token');
     try {
-      const res = await fetch('/api/agents/chat', {
+      const res = await fetch(getApiUrl('/api/agents/chat'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
