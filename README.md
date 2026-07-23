@@ -6,6 +6,17 @@ The platform combines Artificial Intelligence, Knowledge Graphs, Industrial Docu
 
 ---
 
+## 🚀 Live Demo
+
+- 🌐 **Application:** https://tacitiq-industrial-document-intelli.vercel.app
+
+> **Demo Credentials**
+>
+> **Email:** `admin@tacitiq.com`  
+> **Password:** `password`
+
+---
+
 # ✨ Features
 
 - 🔐 Enterprise Authentication (JWT + Google OAuth + Role-Based Access Control)
@@ -80,7 +91,7 @@ The platform combines Artificial Intelligence, Knowledge Graphs, Industrial Docu
                                       │
                                       ▼
                       Enterprise Authentication Layer
-                     (Google OAuth + JWT + RBAC)
+                       (Google OAuth + JWT + RBAC)
                                       │
                                       ▼
                            Spring Boot REST APIs
